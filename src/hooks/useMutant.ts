@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
-import { validSequencie } from '../services/validSequencie.js'
+import { validSequencie } from '../services/validSequencie'
 
 export function useMutant({ ADN }: { ADN: string }) {
   const [isMutant, setIsMutant] = useState(false)

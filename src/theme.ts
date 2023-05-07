@@ -11,7 +11,8 @@ export default extendTheme({
   styles: {
     global: {
       body: {
-        backgroundColor: "bg.100"
+        backgroundColor: "bg.100",
+        color: "white"
       }
     }
   }

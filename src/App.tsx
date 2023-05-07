@@ -58,7 +58,6 @@ function App() {
               </AlertDescription>
             </Alert>
           }
-          <Box >asd</Box>
         </VStack>
       </Container>
     </Box>

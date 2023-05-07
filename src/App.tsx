@@ -1,14 +1,17 @@
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button, Container, FormControl, FormErrorMessage, FormHelperText, HStack, Input, VStack } from "@chakra-ui/react"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button, Container, FormControl, FormErrorMessage, FormHelperText, Input, VStack } from "@chakra-ui/react"
 import debounce from 'just-debounce-it'
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useMutant } from "./hooks/useMutant"
 
 function App() {
   const { ADN, updateADN, error } = useValid()
   const { validMutant, isMutant } = useMutant({ ADN })
-  function submit(e: React.FormEvent) {
+
+  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault()
+    validMutant({ ADN })
   }
+
   const debouncedValidSequencie = useCallback(
     debounce((ADN: string) => {
       validMutant({ ADN })
@@ -23,18 +26,18 @@ function App() {
   return (
     <Box as="main" h={"max-content"}>
       <Container maxW='2xl' centerContent paddingBlock={10}>
-        <FormControl display={"flex"} flexDir={"column"} gap={10} onSubmit={submit} isInvalid={!!error}>
-          <HStack alignItems={"start"}>
-            <VStack gap={1} w="100%">
-              <Input placeholder="Ingrese la secuencia de ADN" onChange={handleChange} value={ADN} />
+        <VStack gap={10} >
+          <FormControl as="form" display={"flex"} alignItems={"start"} gap={10} isInvalid={!!error} onSubmit={handleSubmit}>
+            <VStack gap={0} w="100%">
+              <Input placeholder="Ingrese la secuencia de ADN" value={ADN} onChange={handleChange} />
               {error ? <FormErrorMessage>{error}</FormErrorMessage> :
                 <FormHelperText color={"white"}>
                   Ingresa una cadena de ADN separada por comas. Ejemplo: ATGCGA,CAGTGC,TTATGT,AGAAGG,CCCCTA,TCACTG
                 </FormHelperText>
               }
             </VStack>
-            <Button color={"primary"} bgColor={"bg.500"} px={6} type="submit">Es mutante?</Button>
-          </HStack>
+            <Button color={"primary"} bgColor={"bg.500"} px={6} type="submit" onClick={e => console.log(e)}>Es mutante?</Button>
+          </FormControl>
           {
             isMutant && <Alert
               status='success'
@@ -47,16 +50,16 @@ function App() {
               bgColor={"#8fa800"}
             >
               <AlertIcon boxSize='40px' mr={0} color={"white"} />
-              <AlertTitle mt={4} mb={1} fontSize='lg'color={"bg.500"}>
+              <AlertTitle mt={4} mb={1} fontSize='lg' color={"bg.500"}>
                 Estudiante preparado para luchar!
               </AlertTitle>
-              <AlertDescription maxWidth='sm'color={"bg.500"}>
+              <AlertDescription maxWidth='sm' color={"bg.500"}>
                 La secuencia de ADN coincide con más de 4 letras iguales en sus diferentes formar (oblicua, horizontal o vertical)
               </AlertDescription>
             </Alert>
           }
           <Box >asd</Box>
-        </FormControl>
+        </VStack>
       </Container>
     </Box>
   )

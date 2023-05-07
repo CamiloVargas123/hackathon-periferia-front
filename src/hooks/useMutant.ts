@@ -11,8 +11,8 @@ export function useMutant({ ADN }: { ADN: string }) {
     try {
       previousADN.current = ADN
       setIsMutant(validSequencie({ adn: ADN.split(",") }))
-    } catch (e) {
-      console.log(e)
+    } catch (error) {
+      console.log(error)
     }
 
   }, [])

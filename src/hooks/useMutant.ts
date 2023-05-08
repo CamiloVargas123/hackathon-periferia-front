@@ -1,16 +1,17 @@
-import { useCallback, useRef, useState } from 'react'
-import { validSequencie } from '../services/validSequencie'
+import axios from "axios";
+import { useCallback, useRef, useState } from 'react';
 
 export function useMutant({ ADN }: { ADN: string }) {
   const [isMutant, setIsMutant] = useState(false)
   const previousADN = useRef(ADN)
 
-  const validMutant = useCallback(({ ADN }: { ADN: string }) => {
+  const validMutant = useCallback(async ({ ADN }: { ADN: string }) => {
     if (ADN === previousADN.current) return
 
     try {
       previousADN.current = ADN
-      setIsMutant(validSequencie({ adn: ADN.split(",") }))
+      const response = await axios.post('/mutant', { "dna": ADN.split(",") })
+      setIsMutant(response.status === 200 ? true : false)
     } catch (error) {
       console.log(error)
     }

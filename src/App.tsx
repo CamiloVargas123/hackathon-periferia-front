@@ -2,6 +2,7 @@ import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button, Container,
 import debounce from 'just-debounce-it'
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useMutant } from "./hooks/useMutant"
+import ConsultStat from "./components/ConsultStat"
 
 function App() {
   const { ADN, updateADN, error } = useValid()
@@ -21,7 +22,7 @@ function App() {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newSearch = event.target.value.toUpperCase()
     updateADN(newSearch)
-    debouncedValidSequencie(newSearch)
+    //debouncedValidSequencie(newSearch)
   }
   return (
     <Box as="main" h={"max-content"}>
@@ -36,7 +37,7 @@ function App() {
                 </FormHelperText>
               }
             </VStack>
-            <Button color={"primary"} bgColor={"bg.500"} px={6} type="submit" onClick={e => console.log(e)}>Es mutante?</Button>
+            <Button color={"primary"} bgColor={"bg.500"} px={6} type="submit">Es mutante?</Button>
           </FormControl>
           {
             isMutant && <Alert
@@ -58,6 +59,7 @@ function App() {
               </AlertDescription>
             </Alert>
           }
+          <ConsultStat />
         </VStack>
       </Container>
     </Box>

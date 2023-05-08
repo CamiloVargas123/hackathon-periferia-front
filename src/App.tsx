@@ -1,8 +1,7 @@
 import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button, Container, FormControl, FormErrorMessage, FormHelperText, Input, VStack } from "@chakra-ui/react"
-import debounce from 'just-debounce-it'
-import { useCallback, useEffect, useRef, useState } from "react"
-import { useMutant } from "./hooks/useMutant"
+import { useEffect, useRef, useState } from "react"
 import ConsultStat from "./components/ConsultStat"
+import { useMutant } from "./hooks/useMutant"
 
 function App() {
   const { ADN, updateADN, error } = useValid()

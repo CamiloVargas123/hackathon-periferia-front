@@ -13,16 +13,9 @@ function App() {
     validMutant({ ADN })
   }
 
-  const debouncedValidSequencie = useCallback(
-    debounce((ADN: string) => {
-      validMutant({ ADN })
-    }, 400)
-    , [validMutant]
-  )
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newSearch = event.target.value.toUpperCase()
     updateADN(newSearch)
-    //debouncedValidSequencie(newSearch)
   }
   return (
     <Box as="main" h={"max-content"}>

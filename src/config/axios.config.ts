@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_PATH = 'http://127.0.0.1:3000';
+const BASE_PATH = 'https://hackathon-periferia.onrender.com';
 
 axios.defaults.baseURL = BASE_PATH;
 axios.defaults.headers.common['Accept'] = 'application/json';

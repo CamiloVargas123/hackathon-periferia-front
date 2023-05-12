@@ -30,14 +30,16 @@ function nextFocus({ tableSize, rowIndex, colIndex }: NextFocus): NextFocusResul
   }
   return result
 }
-
+interface Data {
+  [key: string]: string;
+}
 
 interface TableInputProps extends TableSize {
   resetForm?: boolean
 }
 export default function TableInput({ rows, columns, resetForm }: TableInputProps) {
   const table = useMemo(() => Array.from({ length: rows }, () => Array.from({ length: columns }, () => "")), [rows, columns])
-  const { register, handleSubmit, formState: { errors }, setValue, setFocus, reset } = useForm({ mode: "onSubmit" });
+  const { register, handleSubmit, formState: { errors }, setValue, setFocus, reset } = useForm<Data>({ mode: "onSubmit" });
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const showMessage = useCallback(
@@ -56,7 +58,7 @@ export default function TableInput({ rows, columns, resetForm }: TableInputProps
   )
   const { validMutant, isLoading } = useMutant({ showMessage })
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: Data) => {
     for (let i = 0; i < table.length; i++) {
       for (let j = 0; j < table[i].length; j++) {
         table[i][j] = data[`${i},${j}`]
@@ -72,8 +74,9 @@ export default function TableInput({ rows, columns, resetForm }: TableInputProps
   }, [setFocus])
 
   useEffect(() => {
+    setFocus('0,0');
     reset()
-  }, [resetForm, reset])
+  }, [resetForm, reset, setFocus])
 
   return (
     <VStack as="form" onSubmit={handleSubmit(onSubmit)} gap={2}>

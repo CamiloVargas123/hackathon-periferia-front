@@ -1,4 +1,4 @@
-import { Box, Button, Container, FormControl, FormLabel, HStack, Heading, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Container, FormControl, FormLabel, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, VStack } from "@chakra-ui/react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import ConsultStat from "./components/ConsultStat"

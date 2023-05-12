@@ -1,4 +1,4 @@
-import { Button, HStack, Text, VStack } from "@chakra-ui/react";
+import { Button, Text, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
 
@@ -14,13 +14,13 @@ export default function ConsultStat() {
     setStats(response)
   }
   return (
-    <HStack w="100%" justifyContent={"space-between"} alignItems={"start"}>
-      <VStack alignItems={"flex-start"}>
+    <VStack marginBottom={14} >
+      <VStack >
         <Text>Humanos: <Text as="span" color={"primary"}>{stats?.count_human_dna}</Text></Text>
         <Text>Mutantes: <Text as="span" color={"primary"}>{stats?.count_mutant_dna}</Text></Text>
         <Text>Porcentaje: <Text as="span" color={"primary"}>{stats?.ratio}</Text></Text>
       </VStack>
       <Button color={"primary"} bgColor={"bg.500"} px={6} onClick={handleClick}>Ver Estadisticas</Button>
-    </HStack>
+    </VStack>
   )
 }

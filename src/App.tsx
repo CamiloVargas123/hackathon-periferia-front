@@ -1,73 +1,58 @@
-import { Box, Button, Container, FormControl, FormErrorMessage, FormHelperText, Input, VStack } from "@chakra-ui/react"
-import { useEffect, useRef, useState } from "react"
-import Swal from 'sweetalert2'
+import { Box, Button, Container, FormControl, FormLabel, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, VStack } from "@chakra-ui/react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
 import ConsultStat from "./components/ConsultStat"
-import { useMutant } from "./hooks/useMutant"
+import TableInput from "./components/TableInput"
 
-const showMessage = (isMutant: boolean) => {
-  Swal.fire({
-    title: isMutant ? "Estudiante preparado para luchar!" : "Este estudiante no tiene mutaciones",
-    text: isMutant ? "La secuencia de ADN coincide con más de 4 letras iguales en sus diferentes formar (oblicua, horizontal o vertical)" :
-      "Su secuencia de ADN no coincide de ninguna mutacion",
-    icon: isMutant ? 'success' : "warning",
-    position: 'top',
-    showConfirmButton: false,
-    backdrop: "transparent",
-    timer: 4000
-  });
-};
-
+export interface TableSize {
+  rows: number
+  columns: number
+}
 function App() {
-  const { ADN, updateADN, error } = useValid()
-  const { validMutant, isLoading } = useMutant({ ADN, showMessage })
-
-  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    validMutant({ ADN })
+  const [tableSize, setTableSize] = useState<TableSize>({ rows: 6, columns: 6 })
+  const [resetForm, setresetForm] = useState<boolean>()
+  const { register, handleSubmit } = useForm<TableSize>();
+  const onSubmit = (data: TableSize) => {
+    setTableSize(data)
+    setresetForm(e => !e)
   }
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value.includes('"')) return
-    const newSearch = event.target.value.toUpperCase()
-    updateADN(newSearch)
-  }
   return (
     <Box as="main" h={"max-content"}>
-      <Container maxW='2xl' justifyContent={"space-between"} centerContent paddingBlock={10} gap={10}>
-        <FormControl as="form" display={"flex"} alignItems={"start"} gap={10} isInvalid={!!error} onSubmit={handleSubmit} isDisabled={isLoading}>
-          <VStack gap={0} w="100%" alignItems={"flex-start"}>
-            <Input placeholder="Ingrese la secuencia de ADN" value={ADN} onChange={handleChange} />
-            {error ? <FormErrorMessage>{error}</FormErrorMessage> :
-              <FormHelperText color={"white"}>
-                Ejemplo: ATGCGA,CAGTGC,TTATGT,AGAAGG,CCCCTA,TCACTG
-              </FormHelperText>
+      <Container maxW='2xl' justifyContent={"space-between"} centerContent paddingBlock={10} gap={14}>
+        <VStack as="form" onSubmit={handleSubmit(onSubmit)} gap={2}>
+          <VStack w="100%">
+            {
+              Array(2).fill(undefined).map((_, idx) => (
+                <FormControl key={idx}>
+                  <FormLabel>{idx === 0 ? "Filas" : "Columnas"}</FormLabel>
+                  <NumberInput allowMouseWheel step={1} min={4} defaultValue={tableSize.rows}>
+                    <NumberInputField {...register(idx === 0 ? "rows" : "columns")} />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </FormControl>
+              ))
             }
           </VStack>
-          <Button color={"primary"} bgColor={"bg.500"} px={6} type="submit" isLoading={isLoading}>Es mutante?</Button>
-        </FormControl>
+          <FormControl >
+            <FormLabel>Logitud de la mutación</FormLabel>
+            <NumberInput allowMouseWheel step={1} min={4} defaultValue={4} isDisabled={true}>
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </FormControl>
+          <Button w="100%" color={"primary"} bgColor={"bg.500"} px={6} type="submit">Actualizar tamaño de la tabla</Button>
+        </VStack>
+        <TableInput rows={tableSize.rows} columns={tableSize.columns} resetForm={resetForm} />
         <ConsultStat />
       </Container>
-    </Box>
+    </Box >
   )
 }
 export default App
-
-function useValid() {
-  const [ADN, updateADN] = useState<string>('')
-  const [error, setError] = useState<string>()
-  const isFirstInput = useRef(true)
-
-  useEffect(() => {
-    if (isFirstInput.current) {
-      isFirstInput.current = ADN === ''
-      return
-    }
-    if (ADN === '') {
-      setError('No se puede buscar una secuencia de ADN vacía')
-      return
-    }
-    setError(undefined)
-  }, [ADN])
-
-  return { ADN, updateADN, error }
-}

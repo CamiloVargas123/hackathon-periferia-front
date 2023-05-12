@@ -1,17 +1,14 @@
 import axios from "axios";
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 
-export function useMutant({ ADN, showMessage }: { ADN: string, showMessage: (_: boolean) => void }) {
+export function useMutant({ showMessage }: { showMessage: (_: boolean) => void }) {
   const [isMutant, setIsMutant] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const previousADN = useRef(ADN)
 
-  const validMutant = useCallback(async ({ ADN }: { ADN: string }) => {
-    if (ADN === previousADN.current) return
+  const validMutant = useCallback(async ({ ADN }: { ADN: string[] }) => {
     try {
       setIsLoading(true)
-      previousADN.current = ADN
-      const response = await axios.post('/mutant', { "dna": ADN.split(",") })
+      const response = await axios.post('/mutant', { "dna": ADN })
       setIsMutant(response.status === 200 ? true : false)
       showMessage(true)
     } catch (error) {

@@ -43,7 +43,7 @@ function App() {
               </FormHelperText>
             }
           </VStack>
-          <Button color={"primary"} bgColor={"bg.500"} px={6} type="submit">Es mutante?</Button>
+          <Button color={"primary"} bgColor={"bg.500"} px={6} type="submit" isLoading={isLoading}>Es mutante?</Button>
         </FormControl>
         <ConsultStat />
       </Container>

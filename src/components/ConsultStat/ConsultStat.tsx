@@ -1,9 +1,8 @@
 import { Button, Text, VStack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-
 import { getStats } from "./services";
 import { Stat } from "./models";
-import ErrorFetch from "../ErrorFetch";
+import { ErrorFetch } from "..";
 
 export default function ConsultStat() {
   const { data: stats, isError, isFetching, refetch } = useQuery<Stat>({

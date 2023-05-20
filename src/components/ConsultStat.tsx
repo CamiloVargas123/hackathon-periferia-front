@@ -1,26 +1,38 @@
 import { Button, Text, VStack } from "@chakra-ui/react";
-import axios from "axios";
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import ErrorFetch from "./ErrorFetch";
+import { Stat } from "./model";
+import { getStats } from "./services";
 
-interface StatDto {
-  count_mutant_dna: number;
-  count_human_dna: number;
-  ratio: number;
-}
 export default function ConsultStat() {
-  const [stats, setStats] = useState<StatDto>()
-  async function handleClick() {
-    const response: StatDto = await axios.get('/stats').then(res => res.data)
-    setStats(response)
+  const { data: stats, isError, isFetching, refetch } = useQuery<Stat>({
+    queryFn: getStats,
+    queryKey: ['stats'],
+    refetchOnWindowFocus: false
+  })
+  function handleClick() {
+    refetch()
   }
+
   return (
     <VStack marginBottom={14} >
       <VStack >
-        <Text>Humanos: <Text as="span" color={"primary"}>{stats?.count_human_dna}</Text></Text>
-        <Text>Mutantes: <Text as="span" color={"primary"}>{stats?.count_mutant_dna}</Text></Text>
-        <Text>Porcentaje: <Text as="span" color={"primary"}>{stats?.ratio}</Text></Text>
+        <StatText label="Humanos" value={stats?.count_human_dna} />
+        <StatText label="Mutantes" value={stats?.count_mutant_dna} />
+        <StatText label="Porcentaje" value={stats?.ratio} />
       </VStack>
-      <Button color={"primary"} bgColor={"bg.500"} px={6} onClick={handleClick}>Ver Estadisticas</Button>
+      <Button color={"primary"} bgColor={"bg.500"} px={6} onClick={handleClick} isLoading={isFetching}>Ver Estadisticas</Button>
+      {isError && <ErrorFetch />}
     </VStack>
   )
+}
+
+interface StatTextProps {
+  label: string;
+  value?: number;
+}
+function StatText({ label, value }: StatTextProps) {
+  return (
+    <Text>{label}: <Text as="span" color={"primary"}>{value?.toFixed(2) ?? 'N/A'}</Text></Text>
+  );
 }

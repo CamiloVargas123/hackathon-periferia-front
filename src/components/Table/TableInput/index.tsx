@@ -1,9 +1,9 @@
 import { Alert, AlertIcon, Button, HStack, Input, Text, VStack } from '@chakra-ui/react'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useForm } from 'react-hook-form'
-import { useMutant } from '../hooks/useMutant'
 import Swal from 'sweetalert2'
-import type { TableSize } from './TableSize'
+import { useMutant } from './hooks'
+import type { TableSize } from '../models'
 
 const acepptKey = ["A", "T", "C", "G"]
 interface NextFocus {

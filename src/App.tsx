@@ -1,6 +1,6 @@
 import { Box, Container, Text } from "@chakra-ui/react"
-import ConsultStat from "./components/ConsultStat"
 import Table from "./components/Table"
+import ConsultStat from "./components/ConsultStat"
 
 export default function App() {
   return (

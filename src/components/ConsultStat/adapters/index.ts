@@ -1,4 +1,4 @@
-import { Stat, StatDto } from "./model";
+import { Stat, StatDto } from "../models";
 
 export function statAdapter(data: StatDto): Stat {
   return {

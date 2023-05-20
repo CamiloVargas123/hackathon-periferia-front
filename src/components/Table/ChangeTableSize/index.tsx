@@ -1,11 +1,8 @@
 import { Button, FormControl, FormLabel, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, VStack } from '@chakra-ui/react';
 import { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
+import type { TableSize } from '../models';
 
-export interface TableSize {
-  rows: number
-  columns: number
-}
 interface ChangeTableSizeProps {
   tableSize: TableSize
   setTableSize: Dispatch<SetStateAction<TableSize>>

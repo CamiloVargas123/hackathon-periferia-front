@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useCallback, useState } from 'react';
+import { ENDPOINT } from "src/const";
 
 export function useMutant({ showMessage }: { showMessage: (_: boolean) => void }) {
   const [isMutant, setIsMutant] = useState(false)
@@ -8,7 +9,7 @@ export function useMutant({ showMessage }: { showMessage: (_: boolean) => void }
   const validMutant = useCallback(async ({ ADN }: { ADN: string[] }) => {
     try {
       setIsLoading(true)
-      const response = await axios.post('/mutant', { "dna": ADN })
+      const response = await axios.post(ENDPOINT.MUTANT, { "dna": ADN })
       setIsMutant(response.status === 200 ? true : false)
       showMessage(true)
     } catch (error) {

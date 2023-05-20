@@ -1,9 +1,9 @@
 import { Alert, AlertIcon, Button, HStack, Input, Text, VStack } from '@chakra-ui/react'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useForm } from 'react-hook-form'
-import type { TableSize } from '../App'
 import { useMutant } from '../hooks/useMutant'
 import Swal from 'sweetalert2'
+import type { TableSize } from './TableSize'
 
 const acepptKey = ["A", "T", "C", "G"]
 interface NextFocus {
@@ -34,10 +34,10 @@ interface Data {
   [key: string]: string;
 }
 
-interface TableInputProps extends TableSize {
-  resetForm?: boolean
+interface TableInputProps {
+  tableSize: TableSize
 }
-export default function TableInput({ rows, columns, resetForm }: TableInputProps) {
+export default function TableInput({ tableSize: { rows, columns } }: TableInputProps) {
   const table = useMemo(() => Array.from({ length: rows }, () => Array.from({ length: columns }, () => "")), [rows, columns])
   const { register, handleSubmit, formState: { errors }, setValue, setFocus, reset } = useForm<Data>({ mode: "onSubmit" });
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -76,7 +76,7 @@ export default function TableInput({ rows, columns, resetForm }: TableInputProps
   useEffect(() => {
     setFocus('0,0');
     reset()
-  }, [resetForm, reset, setFocus])
+  }, [rows, columns, reset, setFocus])
 
   return (
     <VStack as="form" onSubmit={handleSubmit(onSubmit)} gap={2}>
